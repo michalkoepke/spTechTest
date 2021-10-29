@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+// import { Link, useHistory } from "react-router-dom";
+
+// import logo from "./logo.svg";
+import "./App.css";
+// import { Text, Stack, Flex, Box, Heading } from "@chakra-ui/react";
+
+import Orders from "./components/Orders";
+import Home from "./pages/Home";
+import TestRoute from "./components/TestRoute";
+
+import { ChakraProvider } from "@chakra-ui/react";
+import { AuthProvider } from "./store/AuthContext";
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+// import { AuthProvider } from "./store/AuthContext";
+// import { useAuth } from "./store/AuthContext";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <AuthProvider>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/orders">
+              <Orders />
+            </Route>
+            <Route exact path="/test">
+              <TestRoute />
+            </Route>
+          </Switch>
+        </Router>
+      </AuthProvider>
+    </ChakraProvider>
   );
 }
 
