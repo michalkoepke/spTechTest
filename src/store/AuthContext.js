@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
   console.log("logged in from context: ", loggedIn);
   const [currentUser, setCurrentUser] = useState("");
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [token, setToken] = useState("");
   console.log("token state: ", token);
@@ -24,43 +24,36 @@ export function AuthProvider({ children }) {
   const [orders, setOrders] = useState([]);
   console.log("zamowienia ze stanu :", orders);
 
+  // const testValue = "test value: kjkljaklgjklsjb";
+
+  const [testValue, setTestValue] = useState("test value: kjkljaklgjklsjb");
+
   //! UseEffect prosi na poczatku o refresh token:
 
-  useEffect(() => {
-    
-    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  // useEffect(() => {
 
-      body: "grant_type=refresh_token",
-    })
-      .then((response) => {
-        console.log("resolved", response);
+  //   fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
 
-        return response;
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        // const { access_token } = data;
-        console.log("refresh token: ", data);
-        // return access_token;
-      })
-      // .then((response) => {
-      //   if (response.ok) {
-      //     console.log("response-ok status: true");
-      //     setAuthorized(true);
-      //     // history.push("/orders");
-      //   } else if (!response.ok) {
-      //     console.log("response-ok status: false");
-      //     setAuthorized(false);
-      //     // history.push("/");
-      //   }
-      // })
+  //     body: "grant_type=refresh_token",
+  //   })
+  //     .then((response) => {
+  //       console.log("resolved", response);
 
-      .catch((err) => {
-        console.log("rejected", err);
-      });
-  }, []);
+  //       return response;
+  //     })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // const { access_token } = data;
+  //       console.log("refresh token: ", data);
+  //       // return access_token;
+  //     })
+
+  //     .catch((err) => {
+  //       console.log("rejected", err);
+  //     });
+  // }, []);
 
   //! funkcja logowania/wysylania credentials z formularza
 
@@ -87,9 +80,8 @@ export function AuthProvider({ children }) {
       // .then((data) => console.log("response data: ", data))
       .then((access_token) => {
         setToken(access_token);
+        sessionStorage.setItem("myToken", access_token);
       })
-
-  
 
       .then((token, access_token) => {
         if (token == access_token) {
@@ -112,12 +104,15 @@ export function AuthProvider({ children }) {
 
   // ! pobieranie zamowien
 
-  const getOrders = (token) => {
+  const getOrders = () => {
+    const myToken = sessionStorage.getItem("myToken");
+    console.log("My token: ", myToken);
+
     fetch("https://api.demo.cargo-speed.pl/demo/api/v1/orders/many", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + myToken,
       },
     })
       .then((response) => {
@@ -127,8 +122,8 @@ export function AuthProvider({ children }) {
       })
       .then((response) => response.json())
       .then((data) => {
-        
         setOrders(data);
+        // setLoading(false);
       })
       .catch((err) => {
         console.log("orders-rejected: ", err);
@@ -144,7 +139,8 @@ export function AuthProvider({ children }) {
     getOrders,
     token,
     orders,
-   
+    testValue,
+    loading,
   };
 
   return (
