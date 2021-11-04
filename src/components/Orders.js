@@ -3,13 +3,23 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../store/AuthContext";
 
 import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
+import { useHistory } from "react-router";
 
 import Order from "./Order";
 
 const Orders = () => {
+  const history = useHistory();
   const { getOrders } = useAuth();
   const { orders } = useAuth();
   const { token } = useAuth();
+
+  const { getDirections } = useAuth();
+  const { source } = useAuth();
+  const { destination } = useAuth();
+  const { sx } = useAuth();
+  const { sy } = useAuth();
+  const { dx } = useAuth();
+  const { dy } = useAuth();
   // const { loading } = useAuth();
 
   // tutaj pobieranie zamowien lub test:
@@ -28,6 +38,13 @@ const Orders = () => {
 
     // console.log("token: ", token)
   }, []);
+
+  // ! to ponizej przniesione testowo do komponentu order
+
+  // useEffect(() => {
+  //   // console.log("use effect fired");
+  //   getDirections(sx, sy, dx, dy);
+  // }, [source]);
 
   return (
     <Stack direction="column" align="center" bg="gray.100">

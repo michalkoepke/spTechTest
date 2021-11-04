@@ -18,6 +18,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import Map from "./components/Map";
 
 // import { AuthProvider } from "./store/AuthContext";
 // import { useAuth } from "./store/AuthContext";
@@ -34,8 +35,8 @@ function App() {
             <Route exact path="/orders">
               <Orders />
             </Route>
-            <Route exact path="/test">
-              <TestRoute />
+            <Route exact path="/map">
+              <Map />
             </Route>
           </Switch>
         </Router>
