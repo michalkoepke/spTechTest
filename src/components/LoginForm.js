@@ -30,14 +30,20 @@ const LoginForm = () => {
   const { sendCredentials } = useAuth();
   const { przekieruj } = useAuth();
 
-  // const { increaseCounter } = useAuth();
-  // const { decreaseCounter } = useAuth();
-  // const { counter } = useAuth();
+  //! user i pass:
+
+  const { username } = useAuth();
+  const { setUsername } = useAuth();
+
+  const { password } = useAuth();
+  const { setPassword } = useAuth();
 
   const history = useHistory();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  //! lokalny stan user i pass:
+
+  // const [username, setUsername] = useState("");
+  // const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +52,8 @@ const LoginForm = () => {
       setError("");
       setLoading(true);
       await sendCredentials(username, password);
+      console.log("username: ", username);
+      console.log("password: ", password);
     } catch (error) {
       setError("Failed to log in");
     }
@@ -58,8 +66,6 @@ const LoginForm = () => {
       history.push("/orders");
     }
   }, [loggedIn]);
-
-
 
   return (
     <Stack direction="column" align="center">

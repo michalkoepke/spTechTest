@@ -13,33 +13,52 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const history = useHistory();
-  // stany:
 
-  const [authorized, setAuthorized] = useState(false);
+  //! stany:
+
   const [loggedIn, setLoggedIn] = useState(false);
-  // console.log("logged in from context: ", loggedIn);
-  const [currentUser, setCurrentUser] = useState("");
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const [loading, setLoading] = useState(true);
 
   const [token, setToken] = useState("");
-  // console.log("token state: ", token);
 
   const [orders, setOrders] = useState([]);
-  // console.log("zamowienia ze stanu :", orders);
-
-  // const testValue = "test value: kjkljaklgjklsjb";
-
-  // const [testValue, setTestValue] = useState("test value: kjkljaklgjklsjb");
 
   const [source, setSource] = useState([]);
   const [destination, setDestination] = useState([]);
 
-  console.log("source: ", source);
-  console.log("destination: ", destination);
+  const [mapData, setMapData] = useState({});
 
-  const [mapData, setMapdata] = useState({});
+  //!  prosimy  o refresh token:
 
-  //! UseEffect prosi na poczatku o refresh token:
+  const refreshToken = () => {
+    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+
+      body: "grant_type=refresh_token",
+    })
+      .then((response) => {
+        console.log("resolved", response);
+
+        return response;
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        // const { access_token } = data;
+        console.log("refresh token: ", data);
+        // return access_token;
+      })
+
+      .catch((err) => {
+        // history.push("/");
+        console.log("rejected", err);
+      });
+  };
+  // console.log("refresh token");
 
   // useEffect(() => {
 
@@ -66,7 +85,7 @@ export function AuthProvider({ children }) {
   //     });
   // }, []);
 
-  //! funkcja logowania/wysylania credentials z formularza
+  //! SEND CREDENTIALS : funkcja logowania/wysylania credentials z formularza
 
   const sendCredentials = (username, password) => {
     fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
@@ -75,20 +94,16 @@ export function AuthProvider({ children }) {
       body: `grant_type=password&username=${username}&password=${password}`,
     })
       .then((response) => {
-        // const user = jwt(token);
-        // console.log("resolved", response);
-
-        // console.log("user: ", user);
         return response;
       })
 
       .then((response) => response.json())
       .then((data) => {
         const { access_token } = data;
-        // console.log("access token: ", access_token);
+
         return access_token;
       })
-      // .then((data) => console.log("response data: ", data))
+
       .then((access_token) => {
         setToken(access_token);
         sessionStorage.setItem("myToken", access_token);
@@ -97,14 +112,8 @@ export function AuthProvider({ children }) {
       .then((token, access_token) => {
         if (token == access_token) {
           setLoggedIn(true);
-          // console.log("token = access token");
-
-          // console.log("API response: ", response);
         } else if (token != access_token) {
           setLoggedIn(false);
-          // console.log("token != access token");
-
-          // console.log("API response: ", response);
         }
       })
 
@@ -115,31 +124,32 @@ export function AuthProvider({ children }) {
 
   // ! pobieranie zamowien
 
-  const getOrders = () => {
-    const myToken = sessionStorage.getItem("myToken");
-    // console.log("My token: ", myToken);
+  // const getOrders = () => {
+  //   const myToken = sessionStorage.getItem("myToken");
+  //   // console.log("My token: ", myToken);
 
-    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/orders/many", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + myToken,
-      },
-    })
-      .then((response) => {
-        // console.log("Getting orders");
-        // console.log("orders-resolved: ", response);
-        return response;
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        setOrders(data);
-        // setLoading(false);
-      })
-      .catch((err) => {
-        console.log("orders-rejected: ", err);
-      });
-  };
+  //   fetch("https://api.demo.cargo-speed.pl/demo/api/v1/orders/many", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + myToken,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       // console.log("Getting orders");
+  //       // console.log("orders-resolved: ", response);
+  //       return response;
+  //     })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setOrders(data);
+  //       // setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       // history.push("/");
+  //       console.log("orders-rejected: ", err);
+  //     });
+  // };
 
   // !pobieranie koordynatow z komponentu order
 
@@ -157,6 +167,21 @@ export function AuthProvider({ children }) {
     // getDirections(source, destination);
   };
 
+  const resetMapData = () => {
+    return new Promise((resolve) => {
+      setMapData({});
+      console.log("resetting mapData");
+      resolve();
+    });
+  };
+
+  const testFunction = () => {
+    return new Promise((resolve) => {
+      console.log("test function fired");
+      resolve();
+    });
+  };
+
   //! wysylanie zapytania do openroute service / albo logowanie do konsoli zrodla i destynacji
 
   // let sx = 53.000391;
@@ -169,7 +194,14 @@ export function AuthProvider({ children }) {
   let dx = destination[1];
   let dy = destination[0];
 
-  const getDirections = (sx, sy, dx, dy) => {
+  const getDirections = async (sx, sy, dx, dy) => {
+    // najpierw musi byc zresetowanie mapData
+
+    // await resetMapData();
+    // await testFunction();
+
+    console.log("mapData after reset ", mapData);
+
     fetch(
       `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248894289ead4ab4823a14188183ae994a0&start=${sx},${sy}&end=${dx},${dy}`,
       {
@@ -189,8 +221,9 @@ export function AuthProvider({ children }) {
 
       .then((data) => {
         console.log("setting map data");
-        setMapdata(data);
+        setMapData((prevMapData) => data);
       })
+
       .catch((err) => {
         console.log("rejected", err);
       });
@@ -204,17 +237,27 @@ export function AuthProvider({ children }) {
   // }, [source]);
 
   const value = {
-    authorized,
+    // authorized,
+    refreshToken,
     sendCredentials,
+
+    username,
+    setUsername,
+    password,
+    setPassword,
 
     loggedIn,
     setLoggedIn,
-    getOrders,
+    // getOrders,
+    setOrders,
     token,
     orders,
     loading,
     getCoordinates,
     getDirections,
+    setMapData,
+    resetMapData,
+    testFunction,
 
     source,
     destination,

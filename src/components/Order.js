@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useHistory } from "react-router";
 
 import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
@@ -14,6 +14,8 @@ const Order = ({ order }) => {
   const { source } = useAuth();
   const { destination } = useAuth();
   const { mapData } = useAuth();
+  const { setMapData } = useAuth();
+  const { resetMapData } = useAuth();
 
   const { sx } = useAuth();
   const { sy } = useAuth();
@@ -27,11 +29,6 @@ const Order = ({ order }) => {
   //   getDirections(source, destination);
   //   console.log("button clicked");
   // };
-
-  const pushToMap = () => {
-    console.log("pushing to map");
-    history.push("/map");
-  };
 
   //! to ponizej chyba musi byc zrobione asynchronicznie
 
@@ -47,31 +44,17 @@ const Order = ({ order }) => {
     // history.push("/map");
   };
 
+  // const mapHandlerTest = useCallback(() => {
+  //   pushToMap();
+  // }, [mapData]);
+
   const mapHandler = async () => {
     await getDirections(sx, sy, dx, dy);
-
-    if (mapData !== null) {
-      console.log("pushing to Map");
-      history.push("/map");
-    } else {
-      return (
-        <div>
-          <Text fontSize="2xl">LOADING MAP</Text>
-        </div>
-      );
-    }
-    // pushToMap();
-
-    // history.push("/map");
+    // mapHandlerTest();
   };
 
-  // useEffect(() => {
-  //   // console.log("use effect fired");
-  //   getDirections(source, destination);
-  // }, [source]);
-
   return (
-    <Box p={4} my={2} key={order.id} bg="white">
+    <Box p={4} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
       <Text fontSize="2xl">Person: {order.subject}</Text>
       <Text fontSize="xl">Order number: {order.order_number}</Text>
       <Text fontSize="xl">
@@ -96,10 +79,20 @@ const Order = ({ order }) => {
         Map
       </Button> */}
 
-      <Button key={order.id} onClick={clickHandler}>
-        Map
-      </Button>
-      <Button onClick={mapHandler}>Map-proper</Button>
+      <Box mt={8}>
+        <Button
+          key={order.id}
+          onClick={clickHandler}
+          mx={1}
+          px={8}
+          colorScheme="yellow"
+        >
+          Get coordinates
+        </Button>
+        <Button onClick={mapHandler} mx={1} px={8} colorScheme="orange">
+          Map
+        </Button>
+      </Box>
     </Box>
   );
 };
