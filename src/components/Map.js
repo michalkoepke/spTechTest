@@ -15,6 +15,7 @@ const Map = () => {
   const { mapData } = useAuth();
   const { setMapData } = useAuth();
   const { resetMapData } = useAuth();
+  const { clearCoordinates } = useAuth();
 
   // koordynaty z kontekstu
 
@@ -61,6 +62,12 @@ const Map = () => {
     console.log("data marker1, marker2 loaded?", isDataLoaded);
   }, [isDataLoaded]);
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     clearCoordinates();
+  //   }, 1000);
+  // }, []);
+
   return (
     <Stack>
       {isDataLoaded ? (
@@ -93,7 +100,7 @@ const Map = () => {
             top="85px"
             left="60px"
             zIndex="sticky"
-            colorScheme="orange"
+            colorScheme="cyan"
           >
             Back to orders
           </Button>

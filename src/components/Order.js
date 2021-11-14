@@ -38,23 +38,47 @@ const Order = ({ order }) => {
       order.source.lon,
       order.destination.lat,
       order.destination.lon
-    );
+    )
+      .then(() => {
+        console.log(
+          "coordinates from click handler in Orders component: ",
+          order.source.lat,
+          order.source.lon,
+          order.destination.lat,
+          order.destination.lon
+        );
+      })
+      .then(() => {
+        getDirectionsWithDelay(
+          order.source.lon,
+          order.source.lat,
+          order.destination.lon,
+          order.destination.lat
+        );
+      });
 
-    //  await getDirections(sx, sy, dx, dy);
-    // history.push("/map");
+    //! to ponizej to epskeryment, na razie slabo dziala (markery na mapie są ok ale sciezka nie)
+    // getDirections(sx, sy, dx, dy);
   };
 
   // const mapHandlerTest = useCallback(() => {
   //   pushToMap();
   // }, [mapData]);
 
-  const mapHandler = async () => {
-    await getDirections(sx, sy, dx, dy);
-    // mapHandlerTest();
+  const getDirectionsWithDelay = (sx, sy, dx, dy) => {
+    setTimeout(() => {
+      console.log("coordinates input: ", sx, sy, dx, dy);
+      getDirections(sx, sy, dx, dy);
+    }, 100);
   };
 
+  // const mapHandler = async () => {
+  //   await getDirections(sx, sy, dx, dy);
+  //   // mapHandlerTest();
+  // };
+
   return (
-    <Box p={4} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
+    <Box p={8} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
       <Text fontSize="2xl">Person: {order.subject}</Text>
       <Text fontSize="xl">Order number: {order.order_number}</Text>
       <Text fontSize="xl">
@@ -85,13 +109,13 @@ const Order = ({ order }) => {
           onClick={clickHandler}
           mx={1}
           px={8}
-          colorScheme="yellow"
+          colorScheme="cyan"
         >
-          Get coordinates
-        </Button>
-        <Button onClick={mapHandler} mx={1} px={8} colorScheme="orange">
           Map
         </Button>
+        {/* <Button onClick={mapHandler} mx={1} px={8} colorScheme="orange">
+          Map
+        </Button> */}
       </Box>
     </Box>
   );

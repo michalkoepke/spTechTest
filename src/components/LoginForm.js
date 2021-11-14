@@ -56,6 +56,7 @@ const LoginForm = () => {
       console.log("password: ", password);
     } catch (error) {
       setError("Failed to log in");
+      console.log(error);
     }
 
     setLoading(false);

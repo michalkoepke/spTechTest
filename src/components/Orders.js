@@ -25,6 +25,8 @@ const Orders = () => {
   const { getDirections } = useAuth();
   const { source } = useAuth();
   const { destination } = useAuth();
+  const { clearCoordinates } = useAuth();
+
   const { sx } = useAuth();
   const { sy } = useAuth();
   const { dx } = useAuth();
@@ -45,6 +47,10 @@ const Orders = () => {
   //   }
 
   // }, [token]);
+
+  useEffect(() => {
+    console.log("coordinates from ORDERS component on mount: ", sx, sy, dx, dy);
+  }, [sx]);
 
   const getOrdersExp = () => {
     const myToken = sessionStorage.getItem("myToken");
@@ -75,6 +81,7 @@ const Orders = () => {
         setLoggedIn(false);
         setError(true);
         console.log("orders-rejected: ", err);
+        debugger;
       });
   };
 
@@ -90,16 +97,46 @@ const Orders = () => {
 
   // }, []);
 
+  // ! to ponizej wraca do formularza logowania jak stan loggedIn jest false
+
   useEffect(() => {
     if (loggedIn) {
       // refreshToken();
+      // setSource([]);
+      // setDestination([]);
+      clearCoordinates();
       resetMapData();
       getOrdersExp();
     } else {
       console.log("error, pushing to home");
-      history.push("/");
+      // history.push("/");
     }
   }, [loggedIn]);
+
+  //useEffect should fire when dependency array [source] changes:
+
+  //! uruchamianie funkcji getDirections jesli zmienia sie stan source
+
+  // useEffect(() => {
+  //   console.log("get directions fired");
+
+  //   // if (Object.keys(source).length === 0) {
+  //   //   console.log("source is undefined: ", source);
+  //   //   return;
+  //   // } else {
+  //   //   getDirections(sx, sy, dx, dy);
+  //   // }
+
+  //   if (source === undefined || source.length === 0) {
+  //     console.log("source or destination is undefined");
+  //     return;
+  //   } else if (destination !== undefined || destination.length !== 0) {
+  //     console.log("source or destination IS defined", source, destination);
+  //     getDirections(sx, sy, dx, dy);
+  //   }
+  // }, [source]);
+
+  //!to ponizej odpala mape jak stan mapData ma dlugosc większą od 0
 
   useEffect(() => {
     if (Object.keys(mapData).length === 0) {
@@ -113,8 +150,13 @@ const Orders = () => {
     }
   }, [mapData]);
 
+  //push to map component when mapData was updated
+
   const refreshHandler = () => {
     console.log("refreshHandler button clicked");
+
+    clearCoordinates();
+
     // refreshToken();
     resetMapData();
     getOrdersExp();
@@ -147,7 +189,7 @@ const Orders = () => {
           <Heading size="xl" py={6}>
             Orders
           </Heading>
-          <Button colorScheme="orange" mx={8} onClick={refreshHandler}>
+          <Button colorScheme="cyan" mx={8} px={8} onClick={refreshHandler}>
             Refresh orders
           </Button>
         </Flex>

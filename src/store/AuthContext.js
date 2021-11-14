@@ -30,6 +30,9 @@ export function AuthProvider({ children }) {
   const [source, setSource] = useState([]);
   const [destination, setDestination] = useState([]);
 
+  // const [source, setSource] = useState(undefined);
+  // const [destination, setDestination] = useState(undefined);
+
   const [mapData, setMapData] = useState({});
 
   //!  prosimy  o refresh token:
@@ -40,8 +43,10 @@ export function AuthProvider({ children }) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
 
       body: "grant_type=refresh_token",
+      // credentials: "include",
     })
       .then((response) => {
+        console.log("trying to refresh token");
         console.log("resolved", response);
 
         return response;
@@ -119,7 +124,21 @@ export function AuthProvider({ children }) {
 
       .catch((err) => {
         console.log("rejected", err);
+
+        // eksperyment, piątek:
       });
+  };
+
+  //! sedn credentials inna metoda:
+
+  const sendCredentials2 = (username, password) => {
+    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `grant_type=password&username=${username}&password=${password}`,
+    }).then((response) => {
+      return response;
+    });
   };
 
   // ! pobieranie zamowien
@@ -160,11 +179,26 @@ export function AuthProvider({ children }) {
   //   };
   // }, [sourceLat, sourceLon, destLat, destLon]);
 
-  const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
-    setSource([sourceLat, sourceLon]);
-    setDestination([destLat, destLon]);
+  // ! GET COORDINATES
 
-    // getDirections(source, destination);
+  // const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
+  //   setSource([sourceLat, sourceLon]);
+  //   setDestination([destLat, destLon]);
+
+  //   // getDirections(source, destination);
+  // };
+
+  // ! GET COORDINATES ASYNC VERSION
+
+  const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
+    return new Promise((resolve) => {
+      console.log("getting coordinates");
+
+      setSource([sourceLat, sourceLon]);
+      setDestination([destLat, destLon]);
+
+      resolve();
+    });
   };
 
   const resetMapData = () => {
@@ -175,9 +209,19 @@ export function AuthProvider({ children }) {
     });
   };
 
-  const testFunction = () => {
+  // const testFunction = () => {
+  //   return new Promise((resolve) => {
+  //     console.log("test function fired");
+  //     resolve();
+  //   });
+  // };
+  //! kasowanie koordynatow
+
+  const clearCoordinates = () => {
     return new Promise((resolve) => {
-      console.log("test function fired");
+      setSource([]);
+      setDestination([]);
+      console.log("clearing coordinates");
       resolve();
     });
   };
@@ -195,11 +239,6 @@ export function AuthProvider({ children }) {
   let dy = destination[0];
 
   const getDirections = async (sx, sy, dx, dy) => {
-    // najpierw musi byc zresetowanie mapData
-
-    // await resetMapData();
-    // await testFunction();
-
     console.log("mapData after reset ", mapData);
 
     fetch(
@@ -221,7 +260,8 @@ export function AuthProvider({ children }) {
 
       .then((data) => {
         console.log("setting map data");
-        setMapData((prevMapData) => data);
+        // setMapData((prevMapData) => data);
+        setMapData(data);
       })
 
       .catch((err) => {
@@ -257,10 +297,12 @@ export function AuthProvider({ children }) {
     getDirections,
     setMapData,
     resetMapData,
-    testFunction,
+    // testFunction,
 
     source,
     destination,
+
+    clearCoordinates,
 
     sx,
     sy,

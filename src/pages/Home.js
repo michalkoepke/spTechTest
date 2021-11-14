@@ -7,14 +7,13 @@ import { Link, useHistory } from "react-router-dom";
 const Home = () => {
   const history = useHistory();
 
-
   useEffect(() => {
-    
     fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
 
       body: "grant_type=refresh_token",
+      // credentials: "include",
     })
       .then((response) => {
         console.log("resolved", response);
@@ -27,7 +26,7 @@ const Home = () => {
         console.log("refresh token: ", data);
         // return access_token;
       })
-      
+
       .catch((err) => {
         console.log("rejected", err);
       });
