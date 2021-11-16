@@ -21,6 +21,8 @@ export function AuthProvider({ children }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [credError, setCredError] = useState(false);
+
   const [loading, setLoading] = useState(true);
 
   const [token, setToken] = useState("");
@@ -136,9 +138,30 @@ export function AuthProvider({ children }) {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `grant_type=password&username=${username}&password=${password}`,
-    }).then((response) => {
-      return response;
-    });
+    })
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .then((response) => {
+        if (!response.ok) {
+          setCredError("something went wrong");
+          // setUsername("");
+          // setPassword("");
+          throw new Error("HTTP error " + response.status);
+        } else if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log("response data: ", data);
+        sessionStorage.setItem("myToken", data.access_token);
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err.response.data); // => the response payload
+        }
+      });
   };
 
   // ! pobieranie zamowien
@@ -280,6 +303,7 @@ export function AuthProvider({ children }) {
     // authorized,
     refreshToken,
     sendCredentials,
+    sendCredentials2,
 
     username,
     setUsername,

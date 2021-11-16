@@ -19,6 +19,7 @@ const Orders = () => {
   const { loggedIn } = useAuth();
   const { setLoggedIn } = useAuth();
   const { sendCredentials } = useAuth();
+  const { sendCredentials2 } = useAuth();
   const { username } = useAuth();
   const { password } = useAuth();
 
@@ -52,6 +53,43 @@ const Orders = () => {
     console.log("coordinates from ORDERS component on mount: ", sx, sy, dx, dy);
   }, [sx]);
 
+  //! dzialajaca wersja dotychczasowa
+
+  // const getOrdersExp = () => {
+  //   const myToken = sessionStorage.getItem("myToken");
+
+  //   fetch("https://api.demo.cargo-speed.pl/demo/api/v1/orders/many", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + myToken,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       console.log("orders-resolved: ", response);
+  //       if (response.status === 401) {
+  //         console.log("401");
+  //         sendCredentials(username, password);
+  //       } else {
+  //         return response;
+  //       }
+  //     })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setOrders(data);
+  //       setError(false);
+  //       console.log("orders-data: ", data);
+  //     })
+  //     .catch((err) => {
+  //       setLoggedIn(false);
+  //       setError(true);
+  //       console.log("orders-rejected: ", err);
+  //       debugger;
+  //     });
+  // };
+
+  //! wersja eksperymentalna po zmianie logiki formularza logowania
+
   const getOrdersExp = () => {
     const myToken = sessionStorage.getItem("myToken");
 
@@ -64,24 +102,28 @@ const Orders = () => {
     })
       .then((response) => {
         console.log("orders-resolved: ", response);
-        if (response.status === 401) {
-          console.log("401");
-          sendCredentials(username, password);
-        } else {
-          return response;
+        return response;
+      })
+      .then((response) => {
+        if (!response.ok) {
+          setError("something went wrong");
+          history.push("/");
+
+          // sendCredentials2(username, password);
+          // throw new Error("HTTP error " + response.status);
+        } else if (response.ok) {
+          return response.json();
         }
       })
-      .then((response) => response.json())
+      // .then((response) => response.json())
       .then((data) => {
         setOrders(data);
         setError(false);
         console.log("orders-data: ", data);
       })
       .catch((err) => {
-        setLoggedIn(false);
-        setError(true);
         console.log("orders-rejected: ", err);
-        debugger;
+        // debugger;
       });
   };
 
@@ -112,6 +154,13 @@ const Orders = () => {
       // history.push("/");
     }
   }, [loggedIn]);
+
+  // useEffect(() => {
+  //   clearCoordinates();
+  //   resetMapData();
+  //   getOrdersExp();
+  //   console.log(orders);
+  // }, []);
 
   //useEffect should fire when dependency array [source] changes:
 
