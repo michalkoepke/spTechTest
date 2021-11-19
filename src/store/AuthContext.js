@@ -21,19 +21,10 @@ export function AuthProvider({ children }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [credError, setCredError] = useState(false);
-
-  const [loading, setLoading] = useState(true);
-
-  const [token, setToken] = useState("");
-
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState(null);
 
   const [source, setSource] = useState([]);
   const [destination, setDestination] = useState([]);
-
-  // const [source, setSource] = useState(undefined);
-  // const [destination, setDestination] = useState(undefined);
 
   const [mapData, setMapData] = useState({});
 
@@ -45,7 +36,6 @@ export function AuthProvider({ children }) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
 
       body: "grant_type=refresh_token",
-      // credentials: "include",
     })
       .then((response) => {
         console.log("trying to refresh token");
@@ -55,163 +45,15 @@ export function AuthProvider({ children }) {
       })
       .then((response) => response.json())
       .then((data) => {
-        // const { access_token } = data;
         console.log("refresh token: ", data);
-        // return access_token;
-      })
-
-      .catch((err) => {
-        // history.push("/");
-        console.log("rejected", err);
-      });
-  };
-  // console.log("refresh token");
-
-  // useEffect(() => {
-
-  //   fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-
-  //     body: "grant_type=refresh_token",
-  //   })
-  //     .then((response) => {
-  //       console.log("resolved", response);
-
-  //       return response;
-  //     })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // const { access_token } = data;
-  //       console.log("refresh token: ", data);
-  //       // return access_token;
-  //     })
-
-  //     .catch((err) => {
-  //       console.log("rejected", err);
-  //     });
-  // }, []);
-
-  //! SEND CREDENTIALS : funkcja logowania/wysylania credentials z formularza
-
-  const sendCredentials = (username, password) => {
-    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `grant_type=password&username=${username}&password=${password}`,
-    })
-      .then((response) => {
-        return response;
-      })
-
-      .then((response) => response.json())
-      .then((data) => {
-        const { access_token } = data;
-
-        return access_token;
-      })
-
-      .then((access_token) => {
-        setToken(access_token);
-        sessionStorage.setItem("myToken", access_token);
-      })
-
-      .then((token, access_token) => {
-        if (token == access_token) {
-          setLoggedIn(true);
-        } else if (token != access_token) {
-          setLoggedIn(false);
-        }
       })
 
       .catch((err) => {
         console.log("rejected", err);
-
-        // eksperyment, piątek:
       });
   };
-
-  //! sedn credentials inna metoda:
-
-  const sendCredentials2 = (username, password) => {
-    fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `grant_type=password&username=${username}&password=${password}`,
-    })
-      .then((response) => {
-        console.log(response);
-        return response;
-      })
-      .then((response) => {
-        if (!response.ok) {
-          setCredError("something went wrong");
-          // setUsername("");
-          // setPassword("");
-          throw new Error("HTTP error " + response.status);
-        } else if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        console.log("response data: ", data);
-        sessionStorage.setItem("myToken", data.access_token);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response.data); // => the response payload
-        }
-      });
-  };
-
-  // ! pobieranie zamowien
-
-  // const getOrders = () => {
-  //   const myToken = sessionStorage.getItem("myToken");
-  //   // console.log("My token: ", myToken);
-
-  //   fetch("https://api.demo.cargo-speed.pl/demo/api/v1/orders/many", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + myToken,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       // console.log("Getting orders");
-  //       // console.log("orders-resolved: ", response);
-  //       return response;
-  //     })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setOrders(data);
-  //       // setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       // history.push("/");
-  //       console.log("orders-rejected: ", err);
-  //     });
-  // };
-
-  // !pobieranie koordynatow z komponentu order
-
-  // useEffect(() => {
-  //   const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
-  //     setSource([sourceLat, sourceLon]);
-  //     setDestination([destLat, destLon]);
-  //   };
-  // }, [sourceLat, sourceLon, destLat, destLon]);
 
   // ! GET COORDINATES
-
-  // const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
-  //   setSource([sourceLat, sourceLon]);
-  //   setDestination([destLat, destLon]);
-
-  //   // getDirections(source, destination);
-  // };
-
-  // ! GET COORDINATES ASYNC VERSION
 
   const getCoordinates = (sourceLat, sourceLon, destLat, destLon) => {
     return new Promise((resolve) => {
@@ -232,12 +74,6 @@ export function AuthProvider({ children }) {
     });
   };
 
-  // const testFunction = () => {
-  //   return new Promise((resolve) => {
-  //     console.log("test function fired");
-  //     resolve();
-  //   });
-  // };
   //! kasowanie koordynatow
 
   const clearCoordinates = () => {
@@ -250,11 +86,6 @@ export function AuthProvider({ children }) {
   };
 
   //! wysylanie zapytania do openroute service / albo logowanie do konsoli zrodla i destynacji
-
-  // let sx = 53.000391;
-  // let sy = 18.611654;
-  // let dx = 53.237379;
-  // let dy = 20.16877;
 
   let sx = source[1];
   let sy = source[0];
@@ -283,7 +114,7 @@ export function AuthProvider({ children }) {
 
       .then((data) => {
         console.log("setting map data");
-        // setMapData((prevMapData) => data);
+
         setMapData(data);
       })
 
@@ -294,16 +125,8 @@ export function AuthProvider({ children }) {
 
   // !przekierowanie do mapy
 
-  // useEffect(() => {
-  //   // console.log("use effect fired");
-  //   getDirections(sx, sy, dx, dy);
-  // }, [source]);
-
   const value = {
-    // authorized,
     refreshToken,
-    sendCredentials,
-    sendCredentials2,
 
     username,
     setUsername,
@@ -312,16 +135,15 @@ export function AuthProvider({ children }) {
 
     loggedIn,
     setLoggedIn,
-    // getOrders,
+
     setOrders,
-    token,
+
     orders,
-    loading,
+
     getCoordinates,
     getDirections,
     setMapData,
     resetMapData,
-    // testFunction,
 
     source,
     destination,
@@ -334,13 +156,7 @@ export function AuthProvider({ children }) {
     dy,
 
     mapData,
-    // pushToMap,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {/* {!loading && children} */}
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

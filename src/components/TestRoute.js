@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useAuth } from "../store/AuthContext";
 
 const TestRoute = () => {

@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 
-import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 
 import { useAuth } from "../store/AuthContext";
 
@@ -10,7 +10,7 @@ const Order = ({ order }) => {
 
   const { getCoordinates } = useAuth();
   const { getDirections } = useAuth();
-  // const { pushToMap } = useAuth();
+
   const { source } = useAuth();
   const { destination } = useAuth();
   const { mapData } = useAuth();
@@ -21,14 +21,6 @@ const Order = ({ order }) => {
   const { sy } = useAuth();
   const { dx } = useAuth();
   const { dy } = useAuth();
-
-  // const getDirectionsHandler = () => {
-  //   // e.preventDefault();
-  //   const source = [order.source.lat, order.source.lon];
-  //   const destination = [order.destination.lat, order.destination.lon];
-  //   getDirections(source, destination);
-  //   console.log("button clicked");
-  // };
 
   //! to ponizej chyba musi byc zrobione asynchronicznie
 
@@ -56,14 +48,7 @@ const Order = ({ order }) => {
           order.destination.lat
         );
       });
-
-    //! to ponizej to epskeryment, na razie slabo dziala (markery na mapie są ok ale sciezka nie)
-    // getDirections(sx, sy, dx, dy);
   };
-
-  // const mapHandlerTest = useCallback(() => {
-  //   pushToMap();
-  // }, [mapData]);
 
   const getDirectionsWithDelay = (sx, sy, dx, dy) => {
     setTimeout(() => {
@@ -71,11 +56,6 @@ const Order = ({ order }) => {
       getDirections(sx, sy, dx, dy);
     }, 100);
   };
-
-  // const mapHandler = async () => {
-  //   await getDirections(sx, sy, dx, dy);
-  //   // mapHandlerTest();
-  // };
 
   return (
     <Box p={8} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
@@ -89,20 +69,6 @@ const Order = ({ order }) => {
         {order.destination.lon}
       </Text>
 
-      {/* <Button
-        key={order.id}
-        onClick={() =>
-          getCoordinates(
-            order.source.lat,
-            order.source.lon,
-            order.destination.lat,
-            order.destination.lon
-          )
-        }
-      >
-        Map
-      </Button> */}
-
       <Box mt={8}>
         <Button
           key={order.id}
@@ -113,9 +79,6 @@ const Order = ({ order }) => {
         >
           Map
         </Button>
-        {/* <Button onClick={mapHandler} mx={1} px={8} colorScheme="orange">
-          Map
-        </Button> */}
       </Box>
     </Box>
   );

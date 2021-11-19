@@ -17,11 +17,6 @@ import {
 } from "@chakra-ui/react";
 
 const LoginForm = () => {
-  // const usernameRef = useRef();
-  // const passwordRef = useRef();
-
-  // const { sendCredentials } = useAuth;
-
   const { loggedIn } = useAuth();
   const { setLoggedIn } = useAuth();
 
@@ -43,12 +38,8 @@ const LoginForm = () => {
 
   //! lokalny stan user i pass:
 
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
-  // const [errorMessages, setErrorMessages] = useState({});
 
   // ! EKSPERYMENTALNA funkcja login:
 
@@ -86,49 +77,14 @@ const LoginForm = () => {
       });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     setError("");
-  //     setLoading(true);
-
-  //     // await sendCredentials(username, password);
-  //     await login(username, password);
-  //     // console.log("username: ", username);
-  //     // console.log("password: ", password);
-  //     // history.push("/orders");
-  //   } catch (err) {
-  //     setError("failed to log in " + err.message);
-  //     alert(err.message);
-  //     console.log(err);
-  //   }
-
-  //   setLoading(false);
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(username, password);
   };
 
-  // ! przekierowanie do orders, na razie wyłączone
-
-  // useEffect(() => {
-  //   if (loggedIn) {
-  //     history.push("/orders");
-  //   }
-  // }, [loggedIn]);
-
   return (
     <Stack direction="column" align="center">
       <Flex width="full" align="center" justifyContent="center">
-        {/* {error && (
-          <Box p={14} mt={10}>
-            {error}
-          </Box>
-        )} */}
-
         <Box p={14} mt={10} bg="gray.200">
           <Box textAlign="center">
             {error ? (
@@ -140,7 +96,6 @@ const LoginForm = () => {
                 Log in
               </Text>
             )}
-            {/* <Heading>Login</Heading> */}
           </Box>
           <Box my={4} textAlign="left">
             <form onSubmit={handleSubmit}>
@@ -150,7 +105,6 @@ const LoginForm = () => {
                   type="text"
                   placeholder="Your username"
                   bg="white"
-                  // inputRef={usernameRef}
                   name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -162,7 +116,6 @@ const LoginForm = () => {
                   type="password"
                   placeholder="*******"
                   bg="white"
-                  // inputRef={passwordRef}
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -172,10 +125,6 @@ const LoginForm = () => {
                 Log In
               </Button>
             </form>
-
-            {/* <Button onClick={increaseCounter}>Increase counter</Button>
-            <Button onClick={decreaseCounter}>Decrease counter</Button>
-            <Heading>{counter}</Heading> */}
           </Box>
         </Box>
       </Flex>

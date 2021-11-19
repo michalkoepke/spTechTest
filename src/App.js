@@ -12,17 +12,9 @@ import TestRoute from "./components/TestRoute";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "./store/AuthContext";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Map from "./components/Map";
 import Navbar from "./components/Navbar";
-
-// import { AuthProvider } from "./store/AuthContext";
-// import { useAuth } from "./store/AuthContext";
 
 function App() {
   return (

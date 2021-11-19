@@ -37,10 +37,6 @@ const Map = () => {
     history.push("/orders");
   });
 
-  // useEffect(() => {
-  //   console.log(marker1, marker2);
-  // }, []);
-
   const marker1 = [sx, sy];
   const marker2 = [dx, dy];
 
@@ -54,19 +50,11 @@ const Map = () => {
     }
   };
 
-  // !niedziala jak trzeba ten ternary ponizej:/
-
   useEffect(() => {
     checkIfdataLoaded();
     console.log("marker1: ", marker1, "marker2: ", marker2);
     console.log("data marker1, marker2 loaded?", isDataLoaded);
   }, [isDataLoaded]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     clearCoordinates();
-  //   }, 1000);
-  // }, []);
 
   return (
     <Stack>
