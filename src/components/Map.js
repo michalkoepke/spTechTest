@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
-import { Icon } from "leaflet";
 import "../../src/App.css";
-import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
+import { Flex, Stack, Button, Box } from "@chakra-ui/react";
 
 import { useAuth } from "../store/AuthContext";
 
@@ -11,11 +10,14 @@ import { useHistory } from "react-router";
 // odwolanie do api key
 // process.env.REACT_APP_OPENROUTE_SERVICE_API_KEY;
 
+const mapStyle = {
+  marginTop: "65px",
+};
+
 const Map = () => {
   const { mapData } = useAuth();
-  const { setMapData } = useAuth();
+
   const { resetMapData } = useAuth();
-  const { clearCoordinates } = useAuth();
 
   // koordynaty z kontekstu
 
@@ -59,15 +61,17 @@ const Map = () => {
   return (
     <Stack>
       {isDataLoaded ? (
-        <Flex mt="65px">
-          <MapContainer center={[marker1[1], marker1[0]]} zoom={12}>
+        <Flex>
+          <MapContainer
+            center={[marker1[1], marker1[0]]}
+            zoom={12}
+            style={mapStyle}
+          >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {/* <Marker position={[53.015331, 18.6057]}>
-<Popup>Simple popup</Popup>
-</Marker> */}
+
             <Marker position={[marker1[1], marker1[0]]}>
               <Popup>
                 <Popup>Simple popup</Popup>
@@ -76,7 +80,7 @@ const Map = () => {
 
             <Marker position={[marker2[1], marker2[0]]}>
               <Popup>
-                <Popup>Simple popup</Popup>
+                <div>Simple popup</div>
               </Popup>
             </Marker>
 

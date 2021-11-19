@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import { useAuth } from "../store/AuthContext";
 
-import { Flex, Stack, Box, Heading, Button, Text } from "@chakra-ui/react";
+import { Flex, Stack, Box, Heading, Button } from "@chakra-ui/react";
 import { useHistory } from "react-router";
 
 import Order from "./Order";
 
 const Orders = () => {
   const history = useHistory();
-  // const { getOrders } = useAuth();
+
   const { orders } = useAuth();
-  const { token } = useAuth();
+
   const { mapData } = useAuth();
   const { resetMapData } = useAuth();
   const { refreshToken } = useAuth();
   const { setOrders } = useAuth();
   const { loggedIn } = useAuth();
   const { setLoggedIn } = useAuth();
-  // const { sendCredentials } = useAuth();
-  // const { sendCredentials2 } = useAuth();
-  const { username } = useAuth();
-  const { password } = useAuth();
 
   const { getDirections } = useAuth();
   const { source } = useAuth();
@@ -118,7 +113,7 @@ const Orders = () => {
     console.log(orders);
   };
 
-  //! return: warto moze przemyslec metode renderowane kondycjonalnego, np {orders && orders.map(order => <Order order={order} />)}
+  //! return:
 
   return (
     <Stack direction="column" align="center" bg="gray.100">

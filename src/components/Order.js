@@ -1,13 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router";
 
 import { Box, Button, Text } from "@chakra-ui/react";
 
 import { useAuth } from "../store/AuthContext";
 
 const Order = ({ order }) => {
-  const history = useHistory();
-
   const { getCoordinates } = useAuth();
   const { getDirections } = useAuth();
 
@@ -59,7 +56,9 @@ const Order = ({ order }) => {
 
   return (
     <Box p={8} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
-      <Text fontSize="2xl">Person: {order.subject}</Text>
+      <Text fontSize="3xl" mb={4}>
+        Person: {order.subject}
+      </Text>
       <Text fontSize="xl">Order number: {order.order_number}</Text>
       <Text fontSize="xl">
         Source: lattitude: {order.source.lat} longitude: {order.source.lon}

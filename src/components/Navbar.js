@@ -9,7 +9,7 @@ const Navbar = () => {
       h="50px"
       py={8}
       pos="fixed"
-      zIndex={1600}
+      zIndex={1000}
       align="center"
       justify="center"
     >

@@ -8,7 +8,6 @@ import {
   Flex,
   Stack,
   Box,
-  Heading,
   FormControl,
   FormLabel,
   Input,
@@ -19,12 +18,6 @@ import {
 const LoginForm = () => {
   const { loggedIn } = useAuth();
   const { setLoggedIn } = useAuth();
-
-  const [loading, setLoading] = useState(false);
-
-  const { authorized } = useAuth();
-  const { sendCredentials } = useAuth();
-  const { przekieruj } = useAuth();
 
   //! user i pass:
 
@@ -38,7 +31,6 @@ const LoginForm = () => {
 
   //! lokalny stan user i pass:
 
-  const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
 
   // ! EKSPERYMENTALNA funkcja login:

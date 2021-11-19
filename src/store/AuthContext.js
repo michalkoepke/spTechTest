@@ -1,7 +1,4 @@
-import React, { useState, useEffect, useContext, cloneElement } from "react";
-import Cookies from "js-cookie";
-
-import { useHistory } from "react-router";
+import React, { useState, useContext } from "react";
 
 const AuthContext = React.createContext();
 
@@ -12,8 +9,6 @@ export function useAuth() {
 // Auth provider ktory zapewni nam dostęp do : currentUser, loading i metod signup i login
 
 export function AuthProvider({ children }) {
-  const history = useHistory();
-
   //! stany:
 
   const [loggedIn, setLoggedIn] = useState(false);
