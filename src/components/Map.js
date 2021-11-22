@@ -61,11 +61,12 @@ const Map = () => {
   return (
     <Stack>
       {isDataLoaded ? (
-        <Flex>
+        <Flex direction="column">
+          <div style={{ height: "65px" }}>placeholder</div>
           <MapContainer
             center={[marker1[1], marker1[0]]}
             zoom={12}
-            style={mapStyle}
+            // style={mapStyle}
           >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

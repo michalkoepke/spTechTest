@@ -13,10 +13,11 @@ const Navbar = () => {
       align="center"
       justify="center"
     >
-      <Box w="70%" align="start" justify="center">
+      <Box w="70%" align="start">
         <Text color="white" fontSize="2xl">
           ST-TECH TEST APP
         </Text>
+        <Text color="white">super early verion</Text>
       </Box>
     </Flex>
   );
