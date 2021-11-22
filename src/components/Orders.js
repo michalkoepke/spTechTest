@@ -13,20 +13,20 @@ const Orders = () => {
 
   const { mapData } = useAuth();
   const { resetMapData } = useAuth();
-  const { refreshToken } = useAuth();
+  // const { refreshToken } = useAuth();
   const { setOrders } = useAuth();
   const { loggedIn } = useAuth();
-  const { setLoggedIn } = useAuth();
+  // const { setLoggedIn } = useAuth();
 
-  const { getDirections } = useAuth();
-  const { source } = useAuth();
-  const { destination } = useAuth();
+  // const { getDirections } = useAuth();
+  // const { source } = useAuth();
+  // const { destination } = useAuth();
   const { clearCoordinates } = useAuth();
 
-  const { sx } = useAuth();
-  const { sy } = useAuth();
-  const { dx } = useAuth();
-  const { dy } = useAuth();
+  // const { sx } = useAuth();
+  // const { sy } = useAuth();
+  // const { dx } = useAuth();
+  // const { dy } = useAuth();
 
   // !lokalny stan
 

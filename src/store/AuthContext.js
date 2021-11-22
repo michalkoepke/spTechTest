@@ -6,7 +6,7 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-// Auth provider ktory zapewni nam dostęp do : currentUser, loading i metod signup i login
+// Auth provider
 
 export function AuthProvider({ children }) {
   //! stany:

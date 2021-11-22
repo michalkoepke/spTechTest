@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Link, useHistory, Redirect } from "react-router-dom";
-import jwt from "jwt-decode";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import { useAuth } from "../store/AuthContext";
 
@@ -16,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 
 const LoginForm = () => {
-  const { loggedIn } = useAuth();
   const { setLoggedIn } = useAuth();
 
   //! user i pass:

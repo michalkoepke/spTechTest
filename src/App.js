@@ -7,7 +7,6 @@ import "./App.css";
 
 import Orders from "./components/Orders";
 import Home from "./pages/Home";
-import TestRoute from "./components/TestRoute";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "./store/AuthContext";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "../../src/App.css";
-import { Flex, Stack, Button, Box } from "@chakra-ui/react";
+import { Flex, Stack, Button } from "@chakra-ui/react";
 
 import { useAuth } from "../store/AuthContext";
 
@@ -9,10 +9,6 @@ import { useHistory } from "react-router";
 
 // odwolanie do api key
 // process.env.REACT_APP_OPENROUTE_SERVICE_API_KEY;
-
-const mapStyle = {
-  marginTop: "65px",
-};
 
 const Map = () => {
   const { mapData } = useAuth();

@@ -8,16 +8,16 @@ const Order = ({ order }) => {
   const { getCoordinates } = useAuth();
   const { getDirections } = useAuth();
 
-  const { source } = useAuth();
-  const { destination } = useAuth();
-  const { mapData } = useAuth();
-  const { setMapData } = useAuth();
-  const { resetMapData } = useAuth();
+  // const { source } = useAuth();
+  // const { destination } = useAuth();
+  // const { mapData } = useAuth();
+  // const { setMapData } = useAuth();
+  // const { resetMapData } = useAuth();
 
-  const { sx } = useAuth();
-  const { sy } = useAuth();
-  const { dx } = useAuth();
-  const { dy } = useAuth();
+  // const { sx } = useAuth();
+  // const { sy } = useAuth();
+  // const { dx } = useAuth();
+  // const { dy } = useAuth();
 
   //! to ponizej chyba musi byc zrobione asynchronicznie
 
