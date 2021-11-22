@@ -36,6 +36,7 @@ const LoginForm = () => {
   const login = async (username, password) => {
     fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {
       method: "POST",
+      // mode: 'no-cors',
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `grant_type=password&username=${username}&password=${password}`,
     })
