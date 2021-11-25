@@ -7,9 +7,6 @@ import { useAuth } from "../store/AuthContext";
 
 import { useHistory } from "react-router";
 
-// odwolanie do api key
-// process.env.REACT_APP_OPENROUTE_SERVICE_API_KEY;
-
 const Map = () => {
   const { mapData } = useAuth();
 

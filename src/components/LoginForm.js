@@ -27,11 +27,11 @@ const LoginForm = () => {
 
   const history = useHistory();
 
-  //! lokalny stan user i pass:
+  //! lokalny:
 
   const [error, setError] = useState("");
 
-  // ! EKSPERYMENTALNA funkcja login:
+  // !  funkcja login:
 
   const login = async (username, password) => {
     fetch("https://api.demo.cargo-speed.pl/demo/api/v1/login/access_token", {

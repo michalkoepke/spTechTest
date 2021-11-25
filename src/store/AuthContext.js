@@ -118,7 +118,7 @@ export function AuthProvider({ children }) {
       });
   };
 
-  // !przekierowanie do mapy
+  // eksportujemy values z contextu:
 
   const value = {
     refreshToken,
