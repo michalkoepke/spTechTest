@@ -13,10 +13,11 @@ const Orders = () => {
 
   const { mapData } = useAuth();
   const { resetMapData } = useAuth();
-  // const { refreshToken } = useAuth();
+  const { refreshToken } = useAuth();
   const { setOrders } = useAuth();
   const { loggedIn } = useAuth();
   // const { setLoggedIn } = useAuth();
+  const { getAddress } = useAuth();
 
   // const { getDirections } = useAuth();
   // const { source } = useAuth();
@@ -80,6 +81,7 @@ const Orders = () => {
 
   useEffect(() => {
     if (loggedIn) {
+      refreshToken();
       getOrdersExp();
       clearCoordinates();
       resetMapData();

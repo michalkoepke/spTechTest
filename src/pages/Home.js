@@ -11,7 +11,7 @@ const Home = () => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
 
       body: "grant_type=refresh_token",
-      // credentials: "include",
+      credentials: "include",
     })
       .then((response) => {
         console.log("resolved", response);

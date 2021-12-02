@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const [password, setPassword] = useState("");
 
   const [orders, setOrders] = useState(null);
+  const [address, setAddress] = useState(null);
 
   const [source, setSource] = useState([]);
   const [destination, setDestination] = useState([]);
@@ -118,6 +119,55 @@ export function AuthProvider({ children }) {
       });
   };
 
+  //! fetch data from reverse geocoding service
+
+  let adresy = [];
+
+  const getAddress = async (sx, sy) => {
+    console.log("getting addresses: ", sx, sy);
+
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${sy}&lon=${sx}&format=json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Accept:
+            "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+        },
+      }
+    )
+      // .then((response) => {
+      //   console.log("reverse geocoding response: ", response);
+      //   return response;
+      // })
+
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("reverse geocoding data: ", data);
+        return data;
+      })
+
+      .then((data) => {
+        console.log("setting address");
+
+        adresy.push({
+          ulica: data.address.road,
+          numerDomu: data.address.house_number,
+        });
+
+        console.log("adresy: ", adresy);
+        return adresy;
+      })
+      .then((adresy) => {
+        setAddress(adresy);
+      })
+
+      .catch((err) => {
+        console.log("rejected", err);
+      });
+  };
+
   // eksportujemy values z contextu:
 
   const value = {
@@ -151,6 +201,7 @@ export function AuthProvider({ children }) {
     dy,
 
     mapData,
+    getAddress,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
