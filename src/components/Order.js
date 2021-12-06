@@ -20,6 +20,7 @@ const Order = ({ order }) => {
   const [ulica, setUlica] = useState("");
   const [housenumber, setHousenumber] = useState("");
   const [building, setBuilding] = useState("");
+  const [amenity, setAmenity] = useState("");
 
   // ! stany dla celu
 
@@ -29,6 +30,7 @@ const Order = ({ order }) => {
   const [dulica, setDulica] = useState("");
   const [dhousenumber, setDhousenumber] = useState("");
   const [dbuilding, setDbuilding] = useState("");
+  const [damenity, setDamenity] = useState("");
 
   // const { source } = useAuth();
   // const { destination } = useAuth();
@@ -110,6 +112,7 @@ const Order = ({ order }) => {
         setUlica(data.address.road);
         setHousenumber(data.address.house_number);
         setBuilding(data.address.building);
+        setAmenity(data.address.amenity);
       })
 
       .catch((err) => {
@@ -150,6 +153,7 @@ const Order = ({ order }) => {
         setDulica(data.address.road);
         setDhousenumber(data.address.house_number);
         setDbuilding(data.address.building);
+        setDamenity(data.address.amenity);
       })
 
       .catch((err) => {
@@ -199,6 +203,7 @@ const Order = ({ order }) => {
 
           {housenumber && <Text>House number: {housenumber}</Text>}
           {building && <Text>Building: {building}</Text>}
+          {amenity && <Text>Amenity: {amenity}</Text>}
         </Box>
 
         {/* destynacja */}
@@ -219,6 +224,7 @@ const Order = ({ order }) => {
 
           {dhousenumber && <Text>House number: {dhousenumber}</Text>}
           {dbuilding && <Text>Building: {dbuilding}</Text>}
+          {damenity && <Text>Amenity: {damenity}</Text>}
         </Box>
       </Flex>
 
