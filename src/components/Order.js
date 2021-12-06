@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Text, Spinner, Flex, Spacer } from "@chakra-ui/react";
 
 import { useAuth } from "../store/AuthContext";
 
@@ -11,7 +11,24 @@ const Order = ({ order }) => {
   const { orders } = useAuth();
 
   const [isPending, setIsPending] = useState(true);
+
+  //! stany dla zrodla
+
+  const [city, setCity] = useState("");
+  const [town, setTown] = useState("");
+  const [village, setVillage] = useState("");
   const [ulica, setUlica] = useState("");
+  const [housenumber, setHousenumber] = useState("");
+  const [building, setBuilding] = useState("");
+
+  // ! stany dla celu
+
+  const [dcity, setDcity] = useState("");
+  const [dtown, setDtown] = useState("");
+  const [dvillage, setDvillage] = useState("");
+  const [dulica, setDulica] = useState("");
+  const [dhousenumber, setDhousenumber] = useState("");
+  const [dbuilding, setDbuilding] = useState("");
 
   // const { source } = useAuth();
   // const { destination } = useAuth();
@@ -60,13 +77,7 @@ const Order = ({ order }) => {
     }, 100);
   };
 
-  // ! to działało - pobierało dane ale byl problem z pakowaniem do stanu
-
-  // useEffect(() => {
-  //   getAddress(order.source.lon, order.source.lat);
-  // }, []);
-
-  //! a to eksperyment:
+  //! pobieranie adresu zrodla
 
   const getAddress = async (sx, sy) => {
     console.log("getting addresses: ", sx, sy);
@@ -84,23 +95,61 @@ const Order = ({ order }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("reverse geocoding data: ", data);
+        console.log("zrodlo: ", data);
         return data;
       })
 
       .then((data) => {
-        console.log("setting address");
+        // console.log("setting address");
 
-        // adresy.push({
-        //   ulica: data.address.road,
-        //   numerDomu: data.address.house_number,
-        // });
-
-        // let numerDomu = data.address.house_number;
-
-        console.log("ulica: ", data.address.road);
+        // console.log("ulica: ", data.address.road);
         setIsPending(false);
+        setCity(data.address.city);
+        setTown(data.address.town);
+        setVillage(data.address.village);
         setUlica(data.address.road);
+        setHousenumber(data.address.house_number);
+        setBuilding(data.address.building);
+      })
+
+      .catch((err) => {
+        console.log("rejected", err);
+      });
+  };
+
+  //! pobieranie adresu celu
+
+  const getDestAddress = async (dx, dy) => {
+    console.log("getting addresses: ", dx, dy);
+
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${dy}&lon=${dx}&format=json`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Accept:
+            "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Destynacja: ", data);
+        return data;
+      })
+
+      .then((data) => {
+        // console.log("setting address");
+
+        // console.log("ulica: ", data.address.road);
+        setIsPending(false);
+        setDcity(data.address.city);
+        setDtown(data.address.town);
+        setDvillage(data.address.village);
+        setDulica(data.address.road);
+        setDhousenumber(data.address.house_number);
+        setDbuilding(data.address.building);
       })
 
       .catch((err) => {
@@ -110,28 +159,68 @@ const Order = ({ order }) => {
 
   useEffect(() => {
     getAddress(order.source.lon, order.source.lat);
+    getDestAddress(order.destination.lon, order.destination.lat);
   }, []);
 
   return (
-    <Box p={8} my={4} key={order.id} bg="white" w="100%" boxShadow="xl">
-      <Text fontSize="3xl" mb={4}>
-        Person: {order.subject}
-      </Text>
+    <Box
+      px={12}
+      py={8}
+      my={4}
+      key={order.id}
+      bg="white"
+      w="100%"
+      boxShadow="xl"
+    >
+      <Text fontSize="3xl">Person: {order.subject}</Text>
       <Text fontSize="xl">Order number: {order.order_number}</Text>
-      <Text fontSize="xl">
-        Source: lattitude: {order.source.lat} longitude: {order.source.lon}
-      </Text>
 
-      {isPending && <div>Loading....</div>}
-      {/* {ulica && <Text fontSize="xl">Ulica: {ulica}</Text>} */}
-      {/* <Text fontSize="xl">Ulica: {ulica}</Text> */}
+      {isPending && (
+        <Flex direction="row">
+          Loading....
+          <Spinner />
+        </Flex>
+      )}
 
-      <Text fontSize="xl" mb={4}>
-        Destination: lattitude: {order.destination.lat} longitude:{" "}
-        {order.destination.lon}
-      </Text>
+      <Flex direction="row">
+        {/* zrodlo */}
 
-      <Text>Ulica: {ulica}</Text>
+        <Box Box mr={2}>
+          <Text fontSize="xl" my={4}>
+            Source Address:
+          </Text>
+
+          <Text>
+            City: {city} {town} {village}
+          </Text>
+
+          {/* <Text>Street: {ulica}</Text> */}
+          {ulica && <Text>Street: {ulica}</Text>}
+
+          {housenumber && <Text>House number: {housenumber}</Text>}
+          {building && <Text>Building: {building}</Text>}
+        </Box>
+
+        {/* destynacja */}
+
+        <Spacer />
+
+        <Box ml={2}>
+          <Text fontSize="xl" my={4}>
+            Destination Address:
+          </Text>
+
+          <Text>
+            City: {dcity} {dtown} {dvillage}
+          </Text>
+
+          {/* <Text>Street: {dulica}</Text> */}
+          {dulica && <Text>Street: {dulica}</Text>}
+
+          {dhousenumber && <Text>House number: {dhousenumber}</Text>}
+          {dbuilding && <Text>Building: {dbuilding}</Text>}
+        </Box>
+      </Flex>
 
       <Box mt={8}>
         <Button
