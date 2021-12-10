@@ -182,7 +182,7 @@ const Order = ({ order }) => {
       <Box h="2px" w="100%" bg="cyan.500" mt={4}></Box>
 
       {isPending && (
-        <Flex direction="row">
+        <Flex direction="row" my={4}>
           Loading....
           <Spinner />
         </Flex>
