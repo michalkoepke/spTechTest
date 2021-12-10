@@ -179,6 +179,8 @@ const Order = ({ order }) => {
       <Text fontSize="3xl">Person: {order.subject}</Text>
       <Text fontSize="xl">Order number: {order.order_number}</Text>
 
+      <Box h="2px" w="100%" bg="cyan.500" mt={4}></Box>
+
       {isPending && (
         <Flex direction="row">
           Loading....
@@ -186,45 +188,77 @@ const Order = ({ order }) => {
         </Flex>
       )}
 
-      <Flex direction="row">
+      <Flex direction="row" my={6}>
         {/* zrodlo */}
 
-        <Box Box mr={2}>
+        <Box Box mr={12} w="33%">
           <Text fontSize="xl" my={4}>
             Source Address:
           </Text>
 
           <Text>
-            City: {city} {town} {village}
+            <strong>City:</strong> {city} {town} {village}
           </Text>
 
           {/* <Text>Street: {ulica}</Text> */}
-          {ulica && <Text>Street: {ulica}</Text>}
+          {ulica && (
+            <Text>
+              <strong>Street:</strong> {ulica}
+            </Text>
+          )}
 
-          {housenumber && <Text>House number: {housenumber}</Text>}
-          {building && <Text>Building: {building}</Text>}
-          {amenity && <Text>Amenity: {amenity}</Text>}
+          {housenumber && (
+            <Text>
+              <strong>House number:</strong> {housenumber}
+            </Text>
+          )}
+          {building && (
+            <Text>
+              <strong>Building:</strong> {building}
+            </Text>
+          )}
+          {amenity && (
+            <Text>
+              <strong>Amenity:</strong> {amenity}
+            </Text>
+          )}
         </Box>
 
         {/* destynacja */}
 
-        <Spacer />
+        {/* <Spacer /> */}
 
-        <Box ml={2}>
+        <Box ml={12} w="33%">
           <Text fontSize="xl" my={4}>
             Destination Address:
           </Text>
 
           <Text>
-            City: {dcity} {dtown} {dvillage}
+            <strong>City:</strong> {dcity} {dtown} {dvillage}
           </Text>
 
           {/* <Text>Street: {dulica}</Text> */}
-          {dulica && <Text>Street: {dulica}</Text>}
+          {dulica && (
+            <Text>
+              <strong>Street:</strong> {dulica}
+            </Text>
+          )}
 
-          {dhousenumber && <Text>House number: {dhousenumber}</Text>}
-          {dbuilding && <Text>Building: {dbuilding}</Text>}
-          {damenity && <Text>Amenity: {damenity}</Text>}
+          {dhousenumber && (
+            <Text>
+              <strong>House number:</strong> {dhousenumber}
+            </Text>
+          )}
+          {dbuilding && (
+            <Text>
+              <strong>Building:</strong> {dbuilding}
+            </Text>
+          )}
+          {damenity && (
+            <Text>
+              <strong>Amenity:</strong> {damenity}
+            </Text>
+          )}
         </Box>
       </Flex>
 
